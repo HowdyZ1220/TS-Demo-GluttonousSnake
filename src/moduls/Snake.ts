@@ -2,13 +2,15 @@ export class Snake {
   //获取蛇头
   head: HTMLElement;
   //获取蛇的身体
-  bodies: HTMLCollection;
+  bodies: HTMLElement;
   //获取蛇的容器
   element: HTMLElement;
   constructor() {
-    this.head = document.querySelector("#snake>div")!;
+    console.log("snack");
+    this.bodies = document.getElementById("snake")!;
+
+    this.head = document.querySelector("#snake > div") as HTMLElement;
     this.element = document.getElementById("snake")!;
-    this.bodies = this.element.getElementsByTagName("div");
   }
 
   //获取蛇的坐标
@@ -16,7 +18,7 @@ export class Snake {
     return this.head.offsetLeft;
   }
   get Y() {
-    return this.head.offsetHeight;
+    return this.head.offsetTop;
   }
 
   //设置蛇的坐标
@@ -24,11 +26,19 @@ export class Snake {
     this.head.style.left = value + "px";
   }
   set Y(value) {
-    this.head.style.height = value + "px";
+    console.log("进来了");
+    console.log(value);
+
+    this.head.style.top = value + "px";
   }
 
   //添加蛇的身体
   addBody() {
-    this.element.insertAdjacentHTML("beforeend", "<div></div>");
+    let div = document.createElement("div");
+    this.bodies.appendChild(div);
+    this.bodies.appendChild(div);
+    this.bodies.appendChild(div);
+    this.bodies.appendChild(div);
+    this.bodies.appendChild(div);
   }
 }
