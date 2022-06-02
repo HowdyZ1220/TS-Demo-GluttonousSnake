@@ -8,28 +8,27 @@ export class GameControl {
   food: Food;
   scorePanel: ScorePanel;
   direction: string;
+  //记录游戏是否结束
+  isLive = true;
+
   constructor() {
     this.snake = new Snake();
     this.food = new Food();
     this.scorePanel = new ScorePanel(20, 10);
     this.init();
     this.direction = "ArrowRight";
-    // console.log("game");
+    // this.isLive = true;
   }
 
   init() {
     document.addEventListener("keydown", this.keydownHandler.bind(this));
-    // console.log();
-    // console.log(this.run());
-
-    // console.log("进来了");
+    this.run();
   }
 
   keydownHandler(event: KeyboardEvent) {
     this.direction = event.key;
-    console.log(this);
 
-    this.run();
+    // this.run();
   }
 
   //创建让蛇移动的方法
@@ -38,8 +37,6 @@ export class GameControl {
   run() {
     let X = this.snake.X;
     let Y = this.snake.Y;
-    console.log("x", X, "Y", Y);
-    console.log(this.direction);
 
     switch (this.direction) {
       case "ArrowUp":
@@ -55,8 +52,28 @@ export class GameControl {
         Y = Y + 10;
         break;
     }
-    this.snake.X = X;
-    this.snake.Y = Y;
-    // setTimeout(this.run.bind(this), 300);
+    this.checkEat(X, Y);
+    try {
+      this.snake.X = X;
+      this.snake.Y = Y;
+    } catch (e) {
+      alert((e as any).message + "GAME OVER");
+      this.isLive = false;
+    }
+    clearTimeout();
+    this.isLive && setTimeout(this.run.bind(this), 300);
+  }
+
+  //蛇吃到食物
+  checkEat(X: number, Y: number) {
+    console.log(this.food.X, this.food.Y, X, Y);
+
+    if (X === this.food.X && Y === this.food.Y) {
+      console.log(X, "X", Y, "Y");
+      this.food.change();
+      this.scorePanel.addScore();
+      this.snake.addBody();
+      console.log("吃到十五");
+    }
   }
 }

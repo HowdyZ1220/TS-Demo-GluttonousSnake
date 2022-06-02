@@ -8,7 +8,7 @@ export class Food {
     return this.element.offsetLeft;
   }
   get Y() {
-    return this.element.offsetHeight;
+    return this.element.offsetTop;
   }
   change() {
     const left = Math.floor(Math.random() * 29) * 10;
